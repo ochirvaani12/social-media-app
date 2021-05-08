@@ -1,0 +1,26 @@
+.profile-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-header {
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 90vh;
+}
+
+.profile-picture-names {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.profile-informations {
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+}
