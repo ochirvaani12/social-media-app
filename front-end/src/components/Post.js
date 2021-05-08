@@ -4,6 +4,7 @@ import { Card, Button, Input } from 'semantic-ui-react'
 import { UserContext } from '../context/auth';
 import { createCommentMutation, createLikeMutation, deletePostMutation, deleteLikeMutation } from '../graphql/Mutations';
 import { getPostsQuery, getUserQuery } from '../graphql/Queries';
+import './Post.css'
 
 function Post({ post }) {
 
@@ -95,7 +96,8 @@ function Post({ post }) {
                     query: getPostsQuery,
                 }
             ]
-        })
+        });
+        setNewComment('');
     }
 
     return (
@@ -105,10 +107,10 @@ function Post({ post }) {
                 <Card.Content description={"posted by " + userName} />
                 <div>
                     <Card.Content description={"Likes: "+ post.likes.length} />
-                    <Card.Content description={"Comments: "+post.comments.length} onClick= {showComments}/>
+                    <Card.Content description={"Comments: "+post.comments.length} onClick= {showComments} className="commentButton" />
                     {commentState ?
                         post.comments.map(comment => 
-                            (<Card.Content description={comment.comment} key={comment.commentId} />)
+                            (<Card.Content description={comment.comment} key={comment.commentId} className="comment" />)
                         ):
                         <></>
                     }
@@ -118,6 +120,7 @@ function Post({ post }) {
                                 placeholder='comment...' 
                                 onChange = { (e) => setNewComment(e.target.value)} 
                                 value={newComment}
+                                className="commentInput"
                             />
                             <Button primary onClick={createComment}>comment</Button>
                         </>:

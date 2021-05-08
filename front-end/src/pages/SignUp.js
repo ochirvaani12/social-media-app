@@ -8,6 +8,7 @@ import { createUserMutation } from '../graphql/Mutations';
 function SignUp(props) {
 
     const { setUserData } = useContext(UserContext);
+    const [error, setError] = useState(null);
 
     const [firstname, setFirstname] = useState('');
     const [lastname, setLastname] = useState('');
@@ -16,25 +17,30 @@ function SignUp(props) {
     const [sex, setSex] = useState('');
     const [password, setPassword] = useState('');
 
-    const [createUser, { error, data }] = useMutation(createUserMutation);
+    const [createUser, { data }] = useMutation(createUserMutation);
 
-    const signup = (e) => {
+    const signup = async (e) => {
         e.preventDefault();
-        createUser({
-            variables: {
-                firstName: firstname,
-                lastName: lastname,
-                username: username,
-                email: email,
-                sex: sex,
-                password: password,
-            }
-        })
+        try {
+            await createUser({
+                variables: {
+                    firstName: firstname,
+                    lastName: lastname,
+                    username: username,
+                    email: email,
+                    sex: sex,
+                    password: password,
+                }
+            })
+        } catch (err) {
+            setError(err.message)
+        }
     }
 
     useEffect(() => {
         if(data){
             signupData(data, setUserData);
+            setError(null);
             props.history.push("/")
         }
         
@@ -45,6 +51,7 @@ function SignUp(props) {
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Form size='large'>
                     <Segment stacked>
+                        {error && <div className="error">{error}</div>}
                         <Form.Input 
                             fluid 
                             icon='user' 

@@ -28,4 +28,9 @@ export class LikesResolver {
     async deleteLike(@Args('deleteLikeInput') deleteLikeInput: CreateLikeInput) {
         return await this.likesService.deleteLike(deleteLikeInput);
     }
+
+    @Mutation(() => [Like1])
+    async deleteLikes(@Args('postId') postId: string) {
+        return await this.likesService.deleteLikes(postId);
+    }
 }

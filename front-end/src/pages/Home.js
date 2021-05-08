@@ -9,7 +9,7 @@ import "./Home.css"
 
 
 
-function Home() {
+function Home(props) {
     
     const { user } = useContext(UserContext) 
     const { data } = useQuery(getPostsQuery);
@@ -19,15 +19,18 @@ function Home() {
     const [newPost, setNewPost] = useState('');
 
     useEffect(() => {
+        if(user.firstName === null){
+            props.history.push('/login');
+        }
         if(data){
             setPosts(data.getPosts);
         }
         
     }, [data])
 
-    const createPost = (e) => {
+    const createPost = async (e) => {
         e.preventDefault();
-        createPostMethod({
+        await createPostMethod({
             variables: {
                 userId: user.userId,
                 description: newPost
@@ -38,6 +41,7 @@ function Home() {
                 }
             ]
         })
+        setNewPost('');
     }
 
 
@@ -65,7 +69,6 @@ function Home() {
                     (<Post key={post.postId} post={post}/>)
                 )}
             </div>
-            
         </div>
     )
 }

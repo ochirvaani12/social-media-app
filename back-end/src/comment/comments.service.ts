@@ -29,6 +29,12 @@ export class CommentsService {
         return comment;
     }
 
+    async deleteComments(postId: string): Promise<Comment[]> {
+        const comments = await this.commentRepository.find({postId: postId});
+        this.commentRepository.remove(comments);
+        return comments;
+    }
+
     async updateComment(updateCommentInput: UpdateCommentInput): Promise<Comment> {
         const comment = await this.commentRepository.findOneOrFail({commentId: updateCommentInput.commentId})
         comment.comment = updateCommentInput.comment;

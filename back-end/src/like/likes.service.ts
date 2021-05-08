@@ -27,4 +27,9 @@ export class LikesService {
         this.likeRepository.remove(like);
         return like;
     }
+    async deleteLikes(postId: string): Promise<Like1[]> {
+        const likes = await this.likeRepository.find({postId: postId});
+        this.likeRepository.remove(likes)
+        return likes;
+    }
 }

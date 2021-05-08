@@ -11,22 +11,30 @@ function Login(props) {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null);
 
-    const [loginUser, { error, data }] = useMutation(loginMutation)
+    const [loginUser, { data }] = useMutation(loginMutation)
 
-    const login = (e) => {
+    const login = async (e) => {
         e.preventDefault();
-        loginUser({
-            variables: {
-                email: email,
-                password: password,
-            }
-        })
+        try {
+            await loginUser({
+                variables: {
+                    email: email,
+                    password: password,
+                },
+            })
+        } catch (err) {
+            setError(err.message)
+        }
+        
+        
     }
 
     useEffect(() => {
         if(data){
             loginData(data, setUserData);
+            setError(null);
             props.history.push('/')
 
         }
@@ -37,6 +45,7 @@ function Login(props) {
             <Grid.Column style={{ maxWidth: 450 }}>
                 <Form size='large'>
                     <Segment stacked>
+                        {error && <div className="error">{error}</div>}
                         <Form.Input 
                             fluid icon='user' 
                             iconPosition='left' 

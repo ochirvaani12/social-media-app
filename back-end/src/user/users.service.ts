@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { LoginInput } from "src/login/dto/create.login.input";
 import { LoginService } from "src/login/login.service";
+import { PostsService } from "src/post/posts.service";
 import { Repository } from "typeorm";
 import { CreateUserInput } from "./dto/create.user.input";
 import { UpdateUserInput } from "./dto/update.user.input";
@@ -11,6 +12,7 @@ import { User } from "./user.entity";
 export class UsersService {
     constructor(
         @InjectRepository(User) private userRepository: Repository<User>,
+        private readonly postsService: PostsService,
         private readonly loginService: LoginService,
     ) {}
 
@@ -34,6 +36,7 @@ export class UsersService {
 
     async deleteUser(userId: string): Promise<User> {
         const user = await this.userRepository.findOneOrFail({userId: userId});
+        this.postsService.deletePostsByUserId(user.userId)
         this.userRepository.remove(user);
         return user;
     }

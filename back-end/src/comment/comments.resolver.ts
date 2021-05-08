@@ -30,6 +30,11 @@ export class CommentsResolver {
         return await this.commentsService.deleteComment(commentId);
     }
 
+    @Mutation(() => [Comment])
+    async deleteComments(@Args('postid') postId: string) {
+        return await this.commentsService.deleteComments(postId);
+    }
+
     @Mutation(() => Comment)
     async updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {
         return await this.commentsService.updateComment(updateCommentInput);
